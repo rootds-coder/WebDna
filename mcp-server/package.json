@@ -1,0 +1,24 @@
+{
+  "name": "webdna-mcp-server",
+  "version": "1.0.0",
+  "description": "Inbuilt Model Context Protocol (MCP) server for WebDNA Studio",
+  "type": "module",
+  "main": "server.mjs",
+  "scripts": {
+    "start": "node server.mjs",
+    "setup": "node setup-mcp.mjs"
+  },
+  "keywords": [
+    "mcp",
+    "webdna",
+    "model-context-protocol",
+    "webgl",
+    "threejs",
+    "shaders",
+    "design-system",
+    "tailwind",
+    "ai-agents"
+  ],
+  "author": "WebDNA Contributors",
+  "license": "SEE LICENSE IN LICENSE"
+}

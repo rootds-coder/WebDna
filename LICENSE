@@ -1,0 +1,80 @@
+WEBDNA SOURCE-AVAILABLE & NON-COMMERCIAL LICENSE
+Version 1.0 — October 2026
+
+Copyright (c) 2026 Dhruv Singh Chauhan
+Project: WebDNA
+Repository: https://github.com/rootds-coder/WebDna
+
+==============================================================================
+IMPORTANT DISCLAIMER & EDUCATIONAL USE NOTICE
+==============================================================================
+
+THIS SOFTWARE IS DEVELOPED AND PROVIDED STRICTLY FOR EDUCATIONAL, ACADEMIC,
+DESIGN-RESEARCH, AND SECURITY-AUDITING PURPOSES ONLY.
+
+THE AUTHOR (DHRUV SINGH CHAUHAN) AND CONTRIBUTORS DO NOT CONDONE, ENCOURAGE, OR
+AUTHORIZE THE USE OF THIS SOFTWARE FOR COPYRIGHT INFRINGEMENT, UNLAWFUL DATA
+HARVESTING, INTELLECTUAL PROPERTY THEFT, OR ANY ACTIVITY THAT VIOLATES LOCAL,
+NATIONAL, OR INTERNATIONAL LAWS OR THIRD-PARTY TERMS OF SERVICE.
+
+ANY PERSON OR ENTITY USING THIS SOFTWARE DOES SO AT THEIR OWN SOLE DISCRETION
+AND RISK. THE AUTHOR ASSUMES ABSOLUTELY ZERO RESPONSIBILITY OR LEGAL LIABILITY
+FOR ANY ACTIONS TAKEN BY END USERS OR ANY DAMAGE RESULTING FROM THE USE OR
+MISUSE OF THIS SOFTWARE.
+
+==============================================================================
+TERMS AND CONDITIONS
+==============================================================================
+
+1. GRANT OF LICENSE
+Subject to the terms and restrictions set forth herein, the Licensor (Dhruv Singh Chauhan) grants you a non-exclusive, worldwide, royalty-free, revocable license to access, download, view, study, execute, and modify the Software solely for personal, educational, academic research, and non-commercial purposes.
+
+2. USER RESPONSIBILITY & COMPLIANCE
+You acknowledge and agree that:
+  (a) You are solely and exclusively responsible for ensuring that your use of the Software complies with all applicable copyright laws, intellectual property rights, data protection regulations, and the Terms of Service of any target website you interact with.
+  (b) You shall not use this Software to extract, replicate, redistribute, or commercially exploit any copyrighted content, 3D assets, fonts, or media without explicit legal authorization from the respective rights holder.
+  (c) The Licensor has no control over how, where, or on which targets this Software is deployed once released.
+
+3. MANDATORY ATTRIBUTION REQUIREMENTS
+Any distribution, public display, deployment, or sharing of the Software or any derivative work thereof requires prominent and unmodified preservation of the following notices:
+  (a) Author Credit: Clear and conspicuous credit identifying "Dhruv Singh Chauhan — original creator of WebDNA".
+  (b) Repository Link: A direct, functional link to the canonical source repository:
+      https://github.com/rootds-coder/WebDna
+  (c) Copyright & License Preservation: The complete text of this License must be included in all source distributions and accessible via an "About", "Credits", or "Legal" interface in compiled or deployed applications.
+  (d) Notice of Modifications: Any altered or derivative versions must be explicitly labeled as modified, detailing the nature of the alterations.
+
+4. COMMERCIAL USE PROHIBITION
+Commercial use of the Software, in whole or in part, is strictly prohibited without prior written consent from the Licensor. Restricted commercial activities include, but are not limited to:
+  (a) Selling, licensing, renting, or sublicensing copies of the Software or derivative works.
+  (b) Providing the Software as a hosted service, Software-as-a-Service (SaaS), paid API, or subscription offering.
+  (c) Incorporating or bundling the Software into proprietary, revenue-generating, or closed-source products.
+  (d) Utilizing the Software primarily to operate or advance commercial enterprises or monetary transactions.
+
+To request commercial licensing or custom exceptions, contact the author via the official repository.
+
+5. DERIVATIVE WORKS & REDISTRIBUTION
+If you distribute any modified version or derivative work based upon the Software:
+  (a) You must distribute the derivative work under these exact license terms with identical attribution.
+  (b) You may not impose additional restrictions that conflict with this License.
+  (c) You must make the corresponding source code of your modifications freely available under this License.
+
+6. TRADEMARK & ENDORSEMENT RESTRICTIONS
+This License does not grant any right or license to use the name "Dhruv Singh Chauhan", the project name "WebDNA", or associated logos to endorse, sponsor, or promote any product, service, or derivative creation without prior written permission.
+
+7. INDEMNIFICATION BY END USER
+You agree to defend, indemnify, and hold harmless the Licensor, the project creator (Dhruv Singh Chauhan), and any contributors from and against any and all claims, liabilities, damages, losses, expenses, demands, legal fees, or regulatory penalties arising out of or related to:
+  (a) Your use or misuse of the Software;
+  (b) Any third-party intellectual property or copyright infringement claim resulting from assets or data extracted using the Software;
+  (c) Any violation by you of any website terms of service or applicable law.
+
+8. ABSOLUTE DISCLAIMER OF WARRANTY & LIMITATION OF LIABILITY
+THE SOFTWARE IS PROVIDED "AS IS" AND "AS AVAILABLE", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT.
+
+UNDER NO CIRCUMSTANCES SHALL DHRUV SINGH CHAUHAN, COPYRIGHT HOLDERS, OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, LOSS OF DATA, SYSTEM INTERRUPTION, CLAIMS OF THIRD PARTIES, LEGAL ACTION, OR LOSS OF BUSINESS PROFITS) ARISING IN ANY WAY OUT OF THE USE, REPRODUCTION, OPERATION, OR DISTRIBUTION OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+9. TERMINATION
+Any breach of these terms immediately and automatically revokes all permissions granted under this License. Upon termination, you must cease all use, reproduction, modification, and distribution of the Software and permanently destroy all copies in your possession.
+
+==============================================================================
+END OF LICENSE TERMS
+==============================================================================
