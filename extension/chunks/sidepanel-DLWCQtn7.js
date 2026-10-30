@@ -2693,7 +2693,21 @@ function Cs() {
   const [t, n] = I.useState({ kind: "empty" });
   const [r, a] = I.useState([]);
   const [i, c] = I.useState(null);
-  const [h, u] = I.useState(null);
+  const [h, setRawToast] = I.useState(null);
+  const toastTimerRef = I.useRef(null);
+  const u = I.useCallback((msg, duration = 3000) => {
+    if (toastTimerRef.current) {
+      clearTimeout(toastTimerRef.current);
+      toastTimerRef.current = null;
+    }
+    setRawToast(msg);
+    if (msg) {
+      toastTimerRef.current = setTimeout(() => {
+        setRawToast(null);
+        toastTimerRef.current = null;
+      }, duration);
+    }
+  }, []);
   const [copiedBtn, setCopiedBtn] = I.useState(null);
   const [y, C] = I.useState(10000);
   const [includeScripts, setIncludeScripts] = I.useState(true);
@@ -3949,6 +3963,8 @@ function Cs() {
       // Floating Cyber Toast Popup
       h && d.jsxs("div", {
         className: "agy-toast-popup",
+        title: "Click to dismiss",
+        onClick: function() { u(null); },
         children: [
           d.jsx("span", { className: "agy-toast-icon", children: "✓" }),
           d.jsx("span", { children: h })

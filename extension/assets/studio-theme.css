@@ -888,10 +888,16 @@ body {
   gap: 8px;
   z-index: 99999;
   animation: agyToastSlideUp 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  pointer-events: none;
+  pointer-events: auto;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.15s ease, opacity 0.15s ease;
   max-width: 90%;
   text-align: center;
   white-space: normal;
+}
+.agy-toast-popup:hover {
+  transform: translateX(-50%) scale(1.03);
 }
 
 .agy-toast-icon {
