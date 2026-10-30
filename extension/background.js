@@ -997,30 +997,55 @@ const Tr = Xe(() => {
             return;
           }
           case "INSPECT_START": {
-            let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-            if (!tab) [tab] = await chrome.tabs.query({ active: true });
-            if (!tab || tab.id === undefined) {
-              t({ ok: false, error: "No active tab found." });
+            let targetTab = null;
+            if (s && typeof s === "object" && s.tabId) {
+              try { targetTab = await chrome.tabs.get(s.tabId); } catch(err) {}
+            }
+            if (!targetTab || !targetTab.url) {
+              const focusedTabs = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
+              if (focusedTabs && focusedTabs.length > 0 && focusedTabs[0].id) targetTab = focusedTabs[0];
+            }
+            if (!targetTab || !targetTab.url) {
+              let [tTab] = await chrome.tabs.query({ active: true, currentWindow: true });
+              if (tTab) targetTab = tTab;
+            }
+            if (!targetTab || !targetTab.url) {
+              let [tTab] = await chrome.tabs.query({ active: true });
+              if (tTab) targetTab = tTab;
+            }
+            if (!targetTab || targetTab.id === undefined) {
+              t({ ok: false, error: "No active tab found. Click on a regular web page and try again." });
               return;
             }
-            const check = cr(tab.url);
+            const check = cr(targetTab.url);
             if (!check.supported) {
               t({ ok: false, error: check.message });
               return;
             }
             try {
-              await chrome.scripting.executeScript({ target: { tabId: tab.id }, files: ["probe.js"] });
-              await chrome.tabs.sendMessage(tab.id, { type: "INSPECT_PICK_START" });
+              await chrome.scripting.executeScript({ target: { tabId: targetTab.id }, files: ["probe.js"] }).catch(() => {});
+              await chrome.tabs.sendMessage(targetTab.id, { type: "INSPECT_PICK_START" });
               t({ ok: true });
             } catch (err) {
-              t({ ok: false, error: err instanceof Error ? err.message : "Could not start inspector on this tab." });
+              t({ ok: false, error: err instanceof Error ? err.message : "Could not start element picker on this tab." });
             }
             return;
           }
           case "INSPECT_CANCEL": {
-            let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-            if (tab && tab.id !== undefined) {
-              await chrome.tabs.sendMessage(tab.id, { type: "INSPECT_PICK_CANCEL" }).catch(() => {});
+            let targetTab = null;
+            if (s && typeof s === "object" && s.tabId) {
+              try { targetTab = await chrome.tabs.get(s.tabId); } catch(err) {}
+            }
+            if (!targetTab) {
+              const focusedTabs = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
+              if (focusedTabs && focusedTabs.length > 0) targetTab = focusedTabs[0];
+            }
+            if (!targetTab) {
+              let [tTab] = await chrome.tabs.query({ active: true, currentWindow: true });
+              if (tTab) targetTab = tTab;
+            }
+            if (targetTab && targetTab.id !== undefined) {
+              await chrome.tabs.sendMessage(targetTab.id, { type: "INSPECT_PICK_CANCEL" }).catch(() => {});
             }
             t({ ok: true });
             return;

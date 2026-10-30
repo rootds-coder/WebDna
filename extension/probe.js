@@ -2212,6 +2212,12 @@
     const onKeyDown = (e) => {
       if (e.key === "Escape" && pickerActive) {
         cleanupPicker();
+        globalThis.chrome?.runtime?.sendMessage({
+          protocol: 1,
+          requestId: `inspect-cancel-${Date.now()}`,
+          type: "INSPECT_CANCELLED",
+          createdAt: Date.now()
+        }).catch(() => {});
       }
     };
 
@@ -2219,12 +2225,15 @@
       cleanupPicker();
       pickerActive = true;
       overlayEl = document.createElement("div");
-      overlayEl.style.cssText = "position:absolute;z-index:2147483646;pointer-events:none;border:2px solid #7c3aed;background:rgba(124,58,237,0.14);border-radius:4px;transition:all 40ms ease;";
+      overlayEl.style.cssText = "position:absolute;z-index:2147483646;pointer-events:none;border:2px solid #8b5cf6;background:rgba(139,92,246,0.18);border-radius:4px;transition:all 30ms ease;box-shadow:0 0 12px rgba(139,92,246,0.6);";
       badgeEl = document.createElement("div");
-      badgeEl.style.cssText = "position:absolute;z-index:2147483647;pointer-events:none;background:#1e1b4b;color:#f8fafc;font:600 11px/1.3 system-ui,sans-serif;padding:4px 8px;border-radius:4px;box-shadow:0 4px 12px rgba(0,0,0,0.25);white-space:nowrap;";
-      badgeEl.textContent = "Hover any element (including inside Shadow DOM) and click to inspect in WebDNA";
-      document.body.appendChild(overlayEl);
-      document.body.appendChild(badgeEl);
+      badgeEl.style.cssText = "position:absolute;z-index:2147483647;pointer-events:none;background:rgba(15,23,42,0.96);color:#f8fafc;font:600 11px/1.3 system-ui,sans-serif;padding:5px 10px;border-radius:6px;border:1px solid rgba(139,92,246,0.5);box-shadow:0 8px 24px rgba(0,0,0,0.5);white-space:nowrap;backdrop-filter:blur(8px);";
+      badgeEl.textContent = "Hover any element and click to inspect in WebDNA (Esc to cancel)";
+      const rootEl = document.body || document.documentElement;
+      if (rootEl) {
+        rootEl.appendChild(overlayEl);
+        rootEl.appendChild(badgeEl);
+      }
       document.addEventListener("mousemove", onMouseMove, true);
       document.addEventListener("click", onClick, true);
       document.addEventListener("keydown", onKeyDown, true);

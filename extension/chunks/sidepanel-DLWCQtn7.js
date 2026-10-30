@@ -2756,7 +2756,12 @@ function Cs() {
       if (b.type === "INSPECT_RESULT" && b.payload) {
         setInspectedEl(b.payload);
         setPickerActive(false);
-        e("Inspector");
+        e("Overview");
+        u("Inspected <" + (b.payload.tag || "element") + ">!");
+        setTimeout(() => u(null), 2500);
+      }
+      if (b.type === "INSPECT_CANCELLED") {
+        setPickerActive(false);
       }
     };
     chrome.runtime.onMessage.addListener(p);
@@ -2895,16 +2900,33 @@ function Cs() {
 
   const startLivePicker = async () => {
     c(null);
-    const res = await ne("INSPECT_START");
+    let activeTabId = undefined;
+    try {
+      const focusedTabs = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
+      if (focusedTabs && focusedTabs[0] && focusedTabs[0].id) {
+        activeTabId = focusedTabs[0].id;
+      } else {
+        const [curTab] = await chrome.tabs.query({ active: true, currentWindow: true });
+        if (curTab && curTab.id) activeTabId = curTab.id;
+      }
+    } catch(err) {}
+    const res = await ne("INSPECT_START", { tabId: activeTabId });
     if (!res?.ok) {
       c(res?.error || "Could not start live element picker on this tab.");
       return;
     }
     setPickerActive(true);
+    u("Click any element on the page to inspect");
+    setTimeout(() => u(null), 3000);
   };
 
   const cancelLivePicker = async () => {
-    await ne("INSPECT_CANCEL");
+    let activeTabId = undefined;
+    try {
+      const focusedTabs = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
+      if (focusedTabs && focusedTabs[0] && focusedTabs[0].id) activeTabId = focusedTabs[0].id;
+    } catch(err) {}
+    await ne("INSPECT_CANCEL", { tabId: activeTabId });
     setPickerActive(false);
   };
 
@@ -3167,11 +3189,107 @@ function Cs() {
     ]});
   }
 
+  // ── INSPECTED ELEMENT CARD ───────────────────────────────────────────────
+  function renderInspectedElementCard() {
+    if (!inspectedEl) return null;
+    const tag = inspectedEl.tag || "element";
+    const clsList = Array.isArray(inspectedEl.classes) && inspectedEl.classes.length > 0 
+      ? inspectedEl.classes.slice(0, 3).map(function(c) { return "." + c; }).join("") 
+      : "";
+    const dim = inspectedEl.rect ? (inspectedEl.rect.w + " × " + inspectedEl.rect.h + " px") : "";
+    const st = inspectedEl.styles || {};
+
+    return d.jsxs("div", { className: "agy-inspected-card", children: [
+      d.jsxs("div", { className: "agy-inspected-header", children: [
+        d.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "8px", minWidth: 0 }, children: [
+          d.jsx("span", { className: "agy-inspected-badge", title: "<" + tag + clsList + ">", children: "<" + tag + clsList + ">" }),
+          dim && d.jsx("span", { className: "agy-inspected-dims", children: dim })
+        ]}),
+        d.jsx("button", {
+          className: "agy-inspected-close",
+          title: "Clear Inspected Element",
+          onClick: function() { setInspectedEl(null); },
+          children: "✕"
+        })
+      ]}),
+
+      d.jsxs("div", { className: "agy-inspected-actions", children: [
+        d.jsxs("button", {
+          className: "agy-inspected-btn" + (copiedBtn === "inspected-tw" ? " copied" : ""),
+          onClick: function() {
+            it(inspectedEl.tailwindClasses || (Array.isArray(inspectedEl.classes) ? inspectedEl.classes.join(" ") : ""), "Copied Tailwind classes!", "inspected-tw");
+          },
+          children: [
+            d.jsx("span", { children: copiedBtn === "inspected-tw" ? "✓" : "⚡" }),
+            copiedBtn === "inspected-tw" ? "Copied TW!" : "Copy Tailwind"
+          ]
+        }),
+        d.jsxs("button", {
+          className: "agy-inspected-btn" + (copiedBtn === "inspected-jsx" ? " copied" : ""),
+          onClick: function() {
+            it(inspectedEl.reactSnippet || ("<" + tag + " />"), "Copied React JSX!", "inspected-jsx");
+          },
+          children: [
+            d.jsx("span", { children: copiedBtn === "inspected-jsx" ? "✓" : "⚛" }),
+            copiedBtn === "inspected-jsx" ? "Copied JSX!" : "Copy JSX"
+          ]
+        }),
+        d.jsxs("button", {
+          className: "agy-inspected-btn" + (copiedBtn === "inspected-css" ? " copied" : ""),
+          onClick: function() {
+            it(inspectedEl.cssSnippet || "", "Copied CSS snippet!", "inspected-css");
+          },
+          children: [
+            d.jsx("span", { children: copiedBtn === "inspected-css" ? "✓" : "🎨" }),
+            copiedBtn === "inspected-css" ? "Copied CSS!" : "Copy CSS"
+          ]
+        })
+      ]}),
+
+      d.jsxs("div", { className: "agy-inspected-props", children: [
+        d.jsxs("div", { className: "agy-inspected-prop-item", children: [
+          d.jsx("span", { className: "agy-inspected-prop-key", children: "Font / Size" }),
+          d.jsx("span", { className: "agy-inspected-prop-val", children: (st.fontFamily || "inherit") + " (" + (st.fontSize || "-") + ")" })
+        ]}),
+        d.jsxs("div", { className: "agy-inspected-prop-item", children: [
+          d.jsx("span", { className: "agy-inspected-prop-key", children: "Color / BG" }),
+          d.jsx("span", { className: "agy-inspected-prop-val", children: (st.color || "-") + " / " + (st.backgroundColor || "transparent") })
+        ]}),
+        d.jsxs("div", { className: "agy-inspected-prop-item", children: [
+          d.jsx("span", { className: "agy-inspected-prop-key", children: "Display / Align" }),
+          d.jsx("span", { className: "agy-inspected-prop-val", children: (st.display || "block") + " (" + (st.alignItems || "start") + ")" })
+        ]}),
+        d.jsxs("div", { className: "agy-inspected-prop-item", children: [
+          d.jsx("span", { className: "agy-inspected-prop-key", children: "Padding / Radius" }),
+          d.jsx("span", { className: "agy-inspected-prop-val", children: (st.padding || "0px") + " / " + (st.borderRadius || "0px") })
+        ]})
+      ]}),
+
+      inspectedEl.tailwindClasses && d.jsx("div", {
+        className: "agy-inspected-preview",
+        title: "Click to copy Tailwind classes",
+        onClick: function() {
+          it(inspectedEl.tailwindClasses, "Copied Tailwind classes!", "inspected-tw");
+        },
+        children: inspectedEl.tailwindClasses
+      })
+    ]});
+  }
+
   // ── OVERVIEW TAB ──────────────────────────────────────────────────────────
   function renderOverviewTab() {
-    if (!j) return renderScanReadyCard();
+    if (!j) {
+      if (inspectedEl) {
+        return d.jsxs("div", { className: "agy-tab-body", children: [
+          renderInspectedElementCard(),
+          renderScanReadyCard()
+        ]});
+      }
+      return renderScanReadyCard();
+    }
     var slug = getSiteSlug(j);
     return d.jsxs("div", { className: "agy-tab-body", children: [
+      inspectedEl && renderInspectedElementCard(),
       d.jsxs("div", { className: "agy-site-card", children: [
         d.jsxs("div", { className: "agy-site-meta", children: [
           d.jsx("div", { className: "agy-favicon" }),
