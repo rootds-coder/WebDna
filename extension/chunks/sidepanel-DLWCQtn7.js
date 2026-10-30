@@ -3727,12 +3727,21 @@ function Cs() {
             className: "agy-btn-sm" + (copiedBtn === "install" ? " agy-btn-success" : ""),
             style: { color: copiedBtn === "install" ? "#34d399" : "#38bdf8", borderColor: copiedBtn === "install" ? "rgba(16,185,129,0.6)" : "rgba(56,189,248,0.3)", background: copiedBtn === "install" ? "rgba(16,185,129,0.18)" : "rgba(56,189,248,0.1)" },
             onClick: function() {
-              it("Run 'install-mcp.bat' (Windows) or './install-mcp.sh' (Mac/Linux) in your WebDNA folder to auto-configure Cursor & Claude Desktop with your machine's exact path in 1 second!", "Copied installer command!", "install");
+              const batContent = "@echo off\r\necho Running WebDNA MCP Auto-Installer for Claude & Cursor...\r\nnode \"%~dp0mcp-server\\setup-mcp.mjs\"\r\nif %ERRORLEVEL% NEQ 0 (\r\n  echo.\r\n  echo Checking Desktop for WebDNA...\r\n  node \"%USERPROFILE%\\Desktop\\webdna-core\\mcp-server\\setup-mcp.mjs\"\r\n)\r\npause\r\n";
+              Le("install-webdna-mcp.bat", "application/x-bat", batContent);
+              u("Downloaded installer! Click 'install-webdna-mcp.bat' in your Chrome downloads to run.");
+              setCopiedBtn("install");
+              setTimeout(function() { setCopiedBtn(null); }, 3000);
             },
-            children: copiedBtn === "install" ? "✓ Installer Copied!" : "⚡ 1-Click Auto Install"
+            children: copiedBtn === "install" ? "✓ Installer Downloaded!" : "📥 Download Auto-Installer (.bat)"
           })
         ]}),
-        d.jsx("div", { className: "agy-muted", style: { fontSize: "11px", marginTop: "8px", color: "#94a3b8" }, children: "💡 Zero-config: Double-click install-mcp.bat (Windows) or run ./install-mcp.sh (Mac/Linux) in the WebDNA folder to auto-detect and register your PC's exact path in Cursor and Claude Desktop!" })
+        d.jsxs("div", { className: "agy-muted", style: { fontSize: "11px", marginTop: "10px", color: "#94a3b8", lineHeight: "1.5" }, children: [
+          d.jsx("div", { style: { fontWeight: "600", color: "#cbd5e1", marginBottom: "3px" }, children: "⚡ Easiest Setup for Non-IT Users:" }),
+          d.jsx("div", { children: "1. Open your downloaded WebDNA folder" }),
+          d.jsx("div", { children: "2. Double-click install-mcp.bat (Windows) or run ./install-mcp.sh (Mac/Linux)" }),
+          d.jsx("div", { style: { color: "#34d399", marginTop: "3px" }, children: "✓ Automatically registers your PC's exact path into Cursor & Claude Desktop in 1 second!" })
+        ]})
       ]}),
       d.jsxs("div", { className: "agy-card", children: [
         d.jsx("div", { className: "agy-card-ttl", children: "⚙️ Extension Info" }),
