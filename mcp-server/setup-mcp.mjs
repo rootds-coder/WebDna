@@ -39,9 +39,14 @@ const TARGET_CONFIGS = [
     name: 'Cursor IDE (Global)',
     path: path.join(homeDir, '.cursor', 'mcp.json')
   },
-  // 3. Antigravity
+  // 3. Antigravity Global Config
   {
-    name: 'Google Antigravity',
+    name: 'Google Antigravity (Global Config)',
+    path: path.join(homeDir, '.gemini', 'config', 'mcp_config.json')
+  },
+  // 4. Antigravity Legacy Fallback
+  {
+    name: 'Google Antigravity (Legacy)',
     path: path.join(homeDir, '.gemini', 'mcp_config.json')
   }
 ];
@@ -82,6 +87,32 @@ for (const target of TARGET_CONFIGS) {
     console.error(`[-] Could not configure ${target.name}: ${err.message}`);
   }
 }
+
+// 5. Install Antigravity Skill for interactive chat autocomplete & suggestions
+try {
+  const skillDir = path.join(homeDir, '.gemini', 'config', 'skills', 'webdna');
+  fs.mkdirSync(skillDir, { recursive: true });
+  const skillPath = path.join(skillDir, 'SKILL.md');
+  const skillContent = `---
+name: webdna
+description: Autonomous frontend reverse engineering, 1:1 design system extraction, Three.js 3D scene capture, and React/Tailwind component reconstruction from any URL using WebDNA Studio.
+---
+
+# WebDNA Studio — AI Reverse Engineering & Design System Engine
+
+Use this skill whenever the user mentions **WebDNA**, or asks to **extract, inspect, clone, or reverse-engineer** a website's frontend design system, 3D WebGL scenes, animations, or styling tokens.
+
+## Available Quick Actions
+1. **Full 1:1 Site Extraction**: Extract DOM structure, typography, colors, animations, and tech stack.
+2. **3D WebGL & Three.js Scene Capture**: Capture Three.js object hierarchies, geometries, materials, and GLSL shaders.
+3. **React + Tailwind Component Generation**: Convert inspected sections into production-ready React 18 + Tailwind CSS components.
+4. **Live Element Inspection**: Inspect individual DOM elements, dimensions, computed styles, and instant copy snippets.
+5. **AI Rebrand & Cloning Prompt**: Generate high-fidelity system prompts for Cursor, Claude, and ChatGPT to recreate the site.
+`;
+  fs.writeFileSync(skillPath, skillContent, 'utf8');
+  console.log('[+] Installed Antigravity Skill for chat autocompletion:');
+  console.log(`    -> File: ${skillPath}`);
+} catch (err) {}
 
 console.log('\n----------------------------------------------------');
 console.log(`WebDNA MCP successfully installed across ${configuredCount} AI assistant(s)!`);
