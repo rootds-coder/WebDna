@@ -3727,7 +3727,41 @@ function Cs() {
             className: "agy-btn-sm" + (copiedBtn === "install" ? " agy-btn-success" : ""),
             style: { color: copiedBtn === "install" ? "#34d399" : "#38bdf8", borderColor: copiedBtn === "install" ? "rgba(16,185,129,0.6)" : "rgba(56,189,248,0.3)", background: copiedBtn === "install" ? "rgba(16,185,129,0.18)" : "rgba(56,189,248,0.1)" },
             onClick: function() {
-              const batContent = "@echo off\r\necho Running WebDNA MCP Auto-Installer for Claude & Cursor...\r\nnode \"%~dp0mcp-server\\setup-mcp.mjs\"\r\nif %ERRORLEVEL% NEQ 0 (\r\n  echo.\r\n  echo Checking Desktop for WebDNA...\r\n  node \"%USERPROFILE%\\Desktop\\webdna-core\\mcp-server\\setup-mcp.mjs\"\r\n)\r\npause\r\n";
+              const batContent = [
+                "@echo off",
+                "setlocal enabledelayedexpansion",
+                "title WebDNA MCP Auto-Installer",
+                "echo ====================================================",
+                "echo    WebDNA MCP Auto-Installer for Claude and Cursor",
+                "echo ====================================================",
+                "echo.",
+                "where node >nul 2>&1",
+                "if errorlevel 1 (",
+                "    echo [ERROR] Node.js is required to run the MCP server.",
+                "    echo Please install Node.js from https://nodejs.org",
+                "    echo After installing Node.js, run this file again!",
+                "    echo.",
+                "    pause",
+                "    exit /b 1",
+                ")",
+                "set \"SETUP_PATH=\"",
+                "if exist \"%~dp0mcp-server\\setup-mcp.mjs\" set \"SETUP_PATH=%~dp0mcp-server\\setup-mcp.mjs\"",
+                "if not defined SETUP_PATH if exist \"%~dp0setup-mcp.mjs\" set \"SETUP_PATH=%~dp0setup-mcp.mjs\"",
+                "if not defined SETUP_PATH if exist \"%USERPROFILE%\\Desktop\\webdna-core\\mcp-server\\setup-mcp.mjs\" set \"SETUP_PATH=%USERPROFILE%\\Desktop\\webdna-core\\mcp-server\\setup-mcp.mjs\"",
+                "if not defined SETUP_PATH if exist \"%USERPROFILE%\\Desktop\\WebDNA\\mcp-server\\setup-mcp.mjs\" set \"SETUP_PATH=%USERPROFILE%\\Desktop\\WebDNA\\mcp-server\\setup-mcp.mjs\"",
+                "if not defined SETUP_PATH if exist \"%USERPROFILE%\\Downloads\\webdna-core\\mcp-server\\setup-mcp.mjs\" set \"SETUP_PATH=%USERPROFILE%\\Downloads\\webdna-core\\mcp-server\\setup-mcp.mjs\"",
+                "if not defined SETUP_PATH if exist \"%USERPROFILE%\\Downloads\\webdna-v1.0.0\\mcp-server\\setup-mcp.mjs\" set \"SETUP_PATH=%USERPROFILE%\\Downloads\\webdna-v1.0.0\\mcp-server\\setup-mcp.mjs\"",
+                "if defined SETUP_PATH (",
+                "    echo [OK] Located WebDNA at: !SETUP_PATH!",
+                "    echo.",
+                "    node \"!SETUP_PATH!\"",
+                ") else (",
+                "    echo [ERROR] Could not automatically locate WebDNA mcp-server.",
+                "    echo Please place your WebDNA folder on Desktop or run install-mcp.bat inside the WebDNA folder.",
+                ")",
+                "echo.",
+                "pause"
+              ].join("\r\n");
               Le("install-webdna-mcp.bat", "application/x-bat", batContent);
               u("Downloaded installer! Click 'install-webdna-mcp.bat' in your Chrome downloads to run.");
               setCopiedBtn("install");
