@@ -1,3 +1,5 @@
+[![M8ven Score](https://m8ven.ai/badge/mcp/rootds-coder-webdna-vx2ghq?v=27d3cad78a83e5f654c3c3fb054ec49f)](https://m8ven.ai/mcp/rootds-coder-webdna-vx2ghq?s=readme)
+
 # WebDNA Studio 🧬
 ### The Living 1:1 Web Replicator & Inbuilt MCP AI Engine
 
